@@ -1,96 +1,165 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from 'axios';
+import swal from "sweetalert" 
+import {Navigate} from "react-router-dom"
 
 function RegisterForm() {
+  const [credentials, setCredentials] = useState({
+    userName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+  const [redirect , setRedirect] = useState(false)
+
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      await axios.post('/user/register',{
+        userName: credentials.userName,
+        firstName: credentials.firstName,
+        lastName : credentials.lastName,
+        email : credentials.email,
+        phone : credentials.phone,
+        password : credentials.password
+      });
+      setRedirect(true);
+      swal({
+        title: "Success!",
+        text: "Account Created Successfully",
+        icon: "success",
+        button: "Ok!",
+      });
+    } catch (error) {
+      swal({
+        title: "Try Again!",
+        text: error,
+        icon: "error",
+        button: "Ok!",
+      });
+    }
+    console.log("Form submitted with data:", credentials);
+  };
+
+  if(redirect){
+    return <Navigate to={"/login"} />
+  }
+
   return (
     <>
-      <section className="bg-gray-50 mt-12 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <Link
-            to={'/'}
-            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <img
-              className="w-8 h-8 mr-2"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-              alt="logo"
-            />
-            Flowbite
-          </Link>
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create and account
-              </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
-              <div>
-                  <label
-                    for="confirm-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Rohit"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="name@company.com"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Create an account
-                </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already have an account?{" "}
-                  <Link
-                    to={'/login'}
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Login here
-                  </Link>
-                </p>
-              </form>
-            </div>
-          </div>
+      <div className="container mx-auto mt-8">
+      <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+        {/* Username */}
+        <div className="mb-4">
+          <label htmlFor="userName" className="block text-sm font-semibold text-gray-600">
+            Username
+          </label>
+          <input
+            type="text"
+            id="userName"
+            name="userName"
+            value={credentials.userName}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
         </div>
-      </section>
+
+        {/* First Name */}
+        <div className="mb-4">
+          <label htmlFor="firstName" className="block text-sm font-semibold text-gray-600">
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={credentials.firstName}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        {/* Last Name */}
+        <div className="mb-4">
+          <label htmlFor="lastName" className="block text-sm font-semibold text-gray-600">
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={credentials.lastName}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        {/* Email */}
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-sm font-semibold text-gray-600">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={credentials.email}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        {/* Phone */}
+        <div className="mb-4">
+          <label htmlFor="phone" className="block text-sm font-semibold text-gray-600">
+            Phone
+          </label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={credentials.phone}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-600">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="mb-4">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
     </>
   );
 }
