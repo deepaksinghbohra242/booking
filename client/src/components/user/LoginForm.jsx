@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../UserLayout";
+import swal from 'sweetalert'
 
 function LoginForm() {
   // const [email , setEmail] = useState('');
@@ -40,11 +41,12 @@ function LoginForm() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const {data} = await axios.post('/user/login',{
+      const data = await axios.post('/user/login',{
         email : credentials.email,
         password : credentials.password
       });
       setRedirect(true);
+      console.log("Form submitted with data:", data);
       swal({
         title: "Success!",
         text: "Login Successfully",
@@ -53,13 +55,13 @@ function LoginForm() {
       });
     } catch (error) {
       swal({
-        title: "login failed!",
-        text: error,
-        icon: "success",
+        title: "Try Again!",
+        text: "faliled",
+        icon: "error",
         button: "Ok!",
       });
     }
-    console.log("Form submitted with data:", credentials);
+    
   };
 
   if(redirect){
@@ -67,14 +69,14 @@ function LoginForm() {
   }
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4">Login</h1>
+    <div className="container w-5/12 h-4/5 mx-auto mt-8 border  border-gray-300 rounded-2xl">
+      <h1 className="text-3xl font-bold text-center mb-4">Login</h1>
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
         {/* Email */}
-        <div className="mb-4">
+        <div className="mb-4 pt-4">
           <label
             htmlFor="email"
-            className="block text-sm font-semibold text-gray-600"
+            className="block  text-sm font-semibold text-gray-600"
           >
             Email
           </label>
@@ -107,10 +109,10 @@ function LoginForm() {
         </div>
 
         {/* Submit Button */}
-        <div className="mb-4">
+        <div className="mb-8 flex justify-center pt-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            className=" bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
           >
             Login
           </button>

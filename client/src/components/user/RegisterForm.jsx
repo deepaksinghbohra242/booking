@@ -42,7 +42,7 @@ function RegisterForm() {
     } catch (error) {
       swal({
         title: "Try Again!",
-        text: error,
+        text: "failed",
         icon: "error",
         button: "Ok!",
       });
@@ -51,16 +51,16 @@ function RegisterForm() {
   };
 
   if(redirect){
-    return <Navigate to={"/login"} />
+    return <Navigate to={"/home"} />
   }
 
   return (
     <>
-      <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
+      <div className="container border w-1/3  border-gray-600 mx-auto  rounded-2xl mt-8">
+      <h1 className="text-3xl font-bold mb-4 text-center pt-6">Sign Up</h1>
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
         {/* Username */}
-        <div className="mb-4">
+        <div className="mb-4 pt-6">
           <label htmlFor="userName" className="block text-sm font-semibold text-gray-600">
             Username
           </label>
@@ -150,7 +150,7 @@ function RegisterForm() {
         </div>
 
         {/* Submit Button */}
-        <div className="mb-4">
+        <div className="mb-4 flex justify-center pt-4">
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
