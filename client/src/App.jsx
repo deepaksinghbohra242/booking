@@ -9,6 +9,8 @@ import Room from "./components/hotel/Room";
 import Welcome from "./components/home/Welcome";
 import Flat from "./components/hotel/Flat";
 import Profile from "./components/menu/Profile";
+import Chat from "./components/chat/Chat";
+
 
 axios.defaults.baseURL = "http://localhost:4000/api";
 axios.defaults.withCredentials = true;
@@ -25,7 +27,9 @@ export default function App() {
             <Route path="/room" element={<Room />} />
             <Route path="/" element={<Welcome />} />
             <Route path="/flat" element={<Flat />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:subpage?" element={<Profile />} />
+            <Route path="/profile/:subpage/:action" element={<Profile />} />
+            <Route path="/chat" element={<Chat />} />
           </Route>
         </Routes>
       </UserContextProvider>

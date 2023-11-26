@@ -48,7 +48,7 @@ function Navbar() {
             </NavLink>
           </div>
           <div>
-            <NavLink to={""} className="flex items-center text-white">
+            <NavLink to={"/chat"} className="flex items-center text-white">
               <span className="mr-1">
                 <IoChatboxSharp />
               </span>
