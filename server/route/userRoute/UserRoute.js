@@ -10,6 +10,6 @@ const userRoutes = express.Router();
 
 userRoutes.post('/register' , userRegisterCtrl);
 userRoutes.post('/login', userLoginCtrl);
-// userRoutes.get('/profile' , fetchUserProfile);
+userRoutes.get('/profile' , fetchUserProfile);
 
 module.exports = userRoutes;

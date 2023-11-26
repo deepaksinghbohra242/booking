@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../UserLayout";
+import swal from 'sweetalert'
 
 function LoginForm() {
   // const [email , setEmail] = useState('');
@@ -40,11 +41,12 @@ function LoginForm() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const {data} = await axios.post('/user/login',{
+      const data = await axios.post('/user/login',{
         email : credentials.email,
         password : credentials.password
       });
       setRedirect(true);
+      console.log("Form submitted with data:", data);
       swal({
         title: "Success!",
         text: "Login Successfully",
@@ -53,13 +55,13 @@ function LoginForm() {
       });
     } catch (error) {
       swal({
-        title: "login failed!",
-        text: error,
-        icon: "success",
+        title: "Try Again!",
+        text: "faliled",
+        icon: "error",
         button: "Ok!",
       });
     }
-    console.log("Form submitted with data:", credentials);
+    
   };
 
   if(redirect){

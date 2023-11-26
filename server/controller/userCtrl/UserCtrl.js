@@ -1,6 +1,7 @@
 const User = require('../../model/user/User');
 const generateToken = require('../../config/token/generateToken')
 const expressAsyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 const {verifyToken} = require('../../config/token/generateToken')
 
 
@@ -43,19 +44,24 @@ const userLoginCtrl = expressAsyncHandler(async(req,res)=>{
 })
 
 //fetch user profile
-// const fetchUserProfile = expressAsyncHandler(async (req, res) => {
-//     const { token } = req.cookies;
-//     // console.log(process.env.JWT_KEY);
-//     const decoded = verifyToken(token?.data);
-//     // console.log(decoded);
-//     console.log(decoded)
-//     res.json("decoded");
-// });
+const fetchUserProfile = expressAsyncHandler(async (req, res) => {
+    const { token } = req.cookies.token;
+    if(!token){
+        return res.status(401).json({message : 'Unauthorized : Missing token'});
+    }
+
+    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+        if (err) {
+          return res.status(403).json({ message: 'Forbidden: Invalid token' });
+        }
+        res.json({ user });
+      });
+});
 
 
 
 module.exports = {
     userRegisterCtrl,
     userLoginCtrl,
-    // fetchUserProfile
+    fetchUserProfile
 } 

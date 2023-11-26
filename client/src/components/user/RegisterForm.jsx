@@ -42,7 +42,7 @@ function RegisterForm() {
     } catch (error) {
       swal({
         title: "Try Again!",
-        text: error,
+        text: "failed",
         icon: "error",
         button: "Ok!",
       });
@@ -51,7 +51,7 @@ function RegisterForm() {
   };
 
   if(redirect){
-    return <Navigate to={"/login"} />
+    return <Navigate to={"/home"} />
   }
 
   return (
