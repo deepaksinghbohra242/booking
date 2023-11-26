@@ -21,8 +21,8 @@ function Profile() {
   }
   return (
     <>
-      <div>
-        <nav className="w-full flex justify-center mt-8 gap-8">
+      <div className="">
+        <nav className="w-full  flex justify-center mt-8 gap-8">
           <Link className={linkClasses("profile")} to={"/profile"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

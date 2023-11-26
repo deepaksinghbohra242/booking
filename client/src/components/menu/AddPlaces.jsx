@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Perks from "./Perks";
-import { useState } from 'react';
+import { useState } from "react";
 
 function AddPlaces() {
   const [title, setTitle] = useState("");
@@ -15,28 +15,28 @@ function AddPlaces() {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   function preHeader(text) {
-    return <h2 className="text-2xl  mt-4">{text}</h2>;
+    return <h2 className="p-1 text-2xl  mt-4">{text}</h2>;
   }
   function preDescription(text) {
-    return <p className="text-gray-300 text-sm">{text}</p>;
+    return <p className=" p-1 text-gray-300 text-sm">{text}</p>;
   }
   function preInput(header, description) {
     return (
-      <>
+      <div className="">
         {preHeader(header)}
         {preDescription(description)}
-      </>
+      </div>
     );
   }
   return (
     <>
-      <div>
+      <div className="border  border-gray-800 mt-8 m-3 rounded-xl p-6">
         <form action="">
           {preInput(
             "Title",
             "Title for your place . Should be short and simple"
           )}
-          <input type="text" placeholder="title" />
+          <input type="text" className="" placeholder="title" />
           {preInput("Address", "Address for your place")}
           <input type="text" placeholder="address" />
           {preInput("Photos", "more = better")}
@@ -88,9 +88,9 @@ function AddPlaces() {
             onChange={(e) => setExtraInfo((e) => e.target.value)}
           />
           {preInput("Check in and out time", "add check in and out time")}
-          <div className="grid sm:grid-cols-3">
+          <div className="grid sm:grid-cols-3 gap-7">
             <div>
-              <h3 className="mt-2 mb-1">check in time</h3>
+              <h3 className="mt-2 mb-1 p-1">check in time</h3>
               <input
                 type="text"
                 value={checkIn}
@@ -99,7 +99,7 @@ function AddPlaces() {
               />
             </div>
             <div>
-              <h3 className="mt-2 mb-1">check out time</h3>
+              <h3 className="mt-2 mb-1 p-1">check out time</h3>
               <input
                 type="text"
                 value={checkOut}
@@ -108,7 +108,7 @@ function AddPlaces() {
               />
             </div>
             <div>
-              <h3 className="mt-2 mb-1">Max number of guest</h3>
+              <h3 className="mt-2 mb-1 p-1">Max number of guest</h3>
               <input
                 type="text"
                 value={maxGuests}
@@ -116,7 +116,9 @@ function AddPlaces() {
               />
             </div>
           </div>
-          <button className="primary my-4  w-1/2 ">Save</button>
+          <div className="text-center p-4 ">
+          <button className="bg-blue-500 primary my-4 border rounded-lg w-24 p-2 ">Save</button>
+          </div>
         </form>
       </div>
     </>
