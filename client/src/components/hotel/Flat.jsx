@@ -17,11 +17,7 @@ function Flat() {
         <hr />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
           <RoomCard />
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
+         
         </div>
       </div>
     </>
