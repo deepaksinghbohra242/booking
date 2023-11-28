@@ -5,26 +5,6 @@ import { UserContext } from "../../UserLayout";
 import swal from 'sweetalert'
 
 function LoginForm() {
-  // const [email , setEmail] = useState('');
-  // const [password , setPassword] = useState('');
-  // const [redirect , setRedirect] = useState('');
-  // const {setUser} = useContext(UserContext);
-  // async function handleSubmit(e){
-  //   e.preventDefault();
-  //   try {
-  //     const {data} = await axios.post('/user/login',{
-  //       email,
-  //       password
-  //     });
-  //     setUser(data)
-  //     setRedirect(true);
-  //   } catch (error) {
-  //     alert(error)
-  //   }
-  // }
-  // if(redirect){
-  //   return <Navigate to={'/'} />
-  // }
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -53,6 +33,7 @@ function LoginForm() {
         icon: "success",
         button: "Ok!",
       });
+      
     } catch (error) {
       swal({
         title: "Try Again!",
@@ -65,7 +46,7 @@ function LoginForm() {
   };
 
   if(redirect){
-    return <Navigate to={'/'} />
+    return <Navigate to={'/home'} />
   }
 
   return (

@@ -22,8 +22,6 @@ function Room() {
       <div className="grid grid-cols-1 md:grid-cols- lg:grid-cols-1 gap-8 p-8 m-8">
         <RoomCard />
         <RoomCard />
-        
-
       </div>
     </div>
     </>
