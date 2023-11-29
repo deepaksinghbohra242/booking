@@ -4,16 +4,20 @@ import Perks from "./Perks";
 import { useState } from "react";
 
 function AddPlaces() {
+  const [ownerName, setOwnerName] = useState("");
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
-  const [addedPhoto, setAddedphoto] = useState([]);
-  const [photoLink, setPhotolink] = useState("");
+  const [placeType, setPlaceType] = useState("");
+  const [imgPath, setImgPath] = useState("");
+  const [addedPhoto, setAddedPhoto] = useState("");
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+
   function preHeader(text) {
     return <h2 className="p-1 text-2xl  mt-4">{text}</h2>;
   }
@@ -28,37 +32,96 @@ function AddPlaces() {
       </div>
     );
   }
+
+  function addPhotoByLink(e) {
+    e.preventDefault();
+    console.log(e);
+  }
+
+  function uploadPhoto(e) {
+    const files = e.target.files;
+    setAddedPhoto(files);
+    console.log(files);
+  }
+  function handlesubmit(e) {
+    e.preventDefault();
+    console.log("added", addedPhoto);
+  }
   return (
     <>
-      <div className="border  border-gray-800 mt-8 m-3 rounded-xl p-6">
-        <form action="">
+      <div className="border border-gray-800 mt-8 m-3 rounded-xl p-6">
+        <form action="" onSubmit={handlesubmit}>
+          {preInput("Owner Name", "Enter owner Name   ")}
+          <input
+            type="text"
+            value={ownerName}
+            onChange={(e) => {
+              setOwnerName(e.target.value);
+            }}
+            className=""
+            placeholder="ownerName"
+          />
           {preInput(
             "Title",
             "Title for your place . Should be short and simple"
           )}
-          <input type="text" className="" placeholder="title" />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+            className=""
+            placeholder="title"
+          />
           {preInput("Address", "Address for your place")}
-          <input type="text" placeholder="address" />
+          <input
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
+            type="text"
+            placeholder="address"
+          />
+          {preInput("Plactype", "Room or Flat")}
+          <input
+            type="text"
+            value={placeType}
+            onChange={(e) => {
+              setPlaceType(e.target.value);
+            }}
+            placeholder="Room or Flats"
+          />
           {preInput("Photos", "more = better")}
           <div className="flex gap-2">
-            <input type="text" placeholder="add using link .....jpg" />
-            <button className="bg-gray-200 px-4 rounded-2xl">
+            <input
+              value={imgPath}
+              onChange={(e) => {
+                setImgPath(e.target.value);
+              }}
+              type="text"
+              placeholder="add using link .....jpg"
+            />
+            <button
+              onClick={addPhotoByLink}
+              className="bg-gray-200 px-4 rounded-2xl"
+            >
               Add&nbsp;photo
             </button>
           </div>
           <div className="grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4 mt-4">
-            {/* {addedPhoto.length > 0 &&
-                  addedPhoto.map((link) => ( */}
             <div>
-              <img
-                className="rounded-2xl"
-                // src={"http://localhost:4000/uploads/" + link}
-                alt=""
-              />
+              <img className="rounded-2xl" src="" alt="" />
             </div>
-            {/* //   ))} */}
             <label className="flex gap-2 justify-center cursor-pointer items-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
-              <input type="file" className="hidden" multiple name="" id="" />
+              <input
+                type="file"
+                className="hidden"
+                multiple
+                onClick={uploadPhoto}
+                name=""
+                id=""
+              />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -77,7 +140,21 @@ function AddPlaces() {
             </label>
           </div>
           {preInput("Description", "Description of your place")}
-          <textarea className=" h-36" />
+          <textarea
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+            className=" h-36"
+          />
+          {preInput("Price", "Enter Price per month")}
+          <input
+            value={price}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
+            type="number"
+          />
           {preInput("Perks", "Perks for your place")}
           <div className="grid mt-2 gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             <Perks selected={perks} onChange={setPerks} />
@@ -85,14 +162,14 @@ function AddPlaces() {
           {preInput("Extra info", "House rules etc")}
           <textarea
             value={extraInfo}
-            onChange={(e) => setExtraInfo((e) => e.target.value)}
+            onChange={(e) => setExtraInfo(e.target.value)}
           />
           {preInput("Check in and out time", "add check in and out time")}
           <div className="grid sm:grid-cols-3 gap-7">
             <div>
               <h3 className="mt-2 mb-1 p-1">check in time</h3>
               <input
-                type="text"
+                type="number"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 placeholder="14:00"
@@ -101,23 +178,25 @@ function AddPlaces() {
             <div>
               <h3 className="mt-2 mb-1 p-1">check out time</h3>
               <input
-                type="text"
+                type="number"
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 placeholder="15:00"
               />
             </div>
             <div>
-              <h3 className="mt-2 mb-1 p-1">Max number of guest</h3>
+              <h3 className="mt-2 mb-1 p-1">Pepole going to live</h3>
               <input
-                type="text"
+                type="number"
                 value={maxGuests}
                 onChange={(e) => setMaxGuests(e.target.value)}
               />
             </div>
           </div>
           <div className="text-center p-4 ">
-          <button className="bg-blue-500 primary my-4 border rounded-lg w-24 p-2 ">Save</button>
+            <button className="bg-blue-500 primary my-4 border rounded-lg w-24 p-2 ">
+              Save
+            </button>
           </div>
         </form>
       </div>

@@ -6,7 +6,6 @@ import { UserContext } from "../../UserLayout";
 function Account() {
   const { user, setUser } = useContext(UserContext);
   const [checkLogout, setCheckLogout] = useState(false);
-  console.log(user);
   async function handleLogout() {
     try {
       await axios.post("/user/logout");
@@ -28,7 +27,7 @@ function Account() {
           <div className="border border-gray-300 h-2/3 rounded-2xl ">
             <img
               className="mx-auto w-16 h-2/3 rounded-full mb-4"
-              src=""
+              src={user?.data?.pic}
               alt="User Profile"
             />
           </div>
