@@ -65,32 +65,24 @@ const logout = expressAsyncHandler((req, res) => {
 })
 
 
-// fetch profile photo
-// const profilePhotoUpload = expressAsyncHandler(async (req, res) => {
-    
-//     const { token } = res.cookies;
-//     try {
-//         const userData = jwt.verify(token, process.env.JWT_KEY);
-//         const localpath = `public/Images/Profile/${req.file.filename}`;
-//         const imgUploaded = await cloudinaryImgUpload(localpath);
-//         console.log(imgUploaded);
-//         const founduser = await User.findByIdAndUpdate(userData?.id, {
-//             pic: imgUploaded?.url,
-//         }, {
-//             new: true
-//         })
-//         console.log(founduser);
-//         fs.unlinkSync(localpath);
-//         res.json(imgUploaded);
-//     } catch (error) {
-//         res.status(403).json({ message: 'Forbidden: Invalid token' });
-//     }
-
-// })
 
 
 const uploadImg = expressAsyncHandler(async(req,res)=>{
-    res.json("doe")
+    const {image} = req.body;
+    const userId = req.userId
+    console.log(userId)
+    const imageUploaded = await cloudinaryImgUpload(image);
+    try {
+        const foundUser = await User.findByIdAndUpdate(userId,{
+            pic : imageUploaded?.url?.url
+        },{
+            new : true
+        })
+        console.log(foundUser);
+    } catch (error) {
+        console.log(error);
+    }
+    res.json(imageUploaded);
 })
 
 module.exports = {

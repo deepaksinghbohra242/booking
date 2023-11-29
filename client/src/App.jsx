@@ -9,7 +9,7 @@ import Room from "./components/hotel/Room";
 import Welcome from "./components/home/Welcome";
 import Flat from "./components/hotel/Flat";
 import Profile from "./components/menu/Profile";
-import Chat from "./components/chat/Chat";
+import PhotoPage from "./components/utils/photoPage";
 
 
 axios.defaults.baseURL = "http://localhost:4000/api";
@@ -21,6 +21,7 @@ export default function App() {
       <UserContextProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route path="/uploadPhoto" element={<PhotoPage />} />
             <Route path="/home" element={<Home/>} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
@@ -29,7 +30,6 @@ export default function App() {
             <Route path="/flat" element={<Flat />} />
             <Route path="/profile/:subpage?" element={<Profile />} />
             <Route path="/profile/:subpage/:action" element={<Profile />} />
-            <Route path="/chat" element={<Chat />} />
           </Route>
         </Routes>
       </UserContextProvider>

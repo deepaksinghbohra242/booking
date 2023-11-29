@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const User = require('../model/user/User')
 
 const fetchUser = async (req, res, next) => {
     const {token} = req.cookies;
@@ -12,7 +13,8 @@ const fetchUser = async (req, res, next) => {
                 console.log(err);
                 return res.status(403).json(err);
             }
-            
+            const user = await User.findById(userData?.id).select("-password");
+            req.user = user;
             req.userId = userData?.id;
             next();
         });
