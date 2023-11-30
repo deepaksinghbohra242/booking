@@ -47,7 +47,7 @@ function Flat() {
         {flatDetails.map((room, index) => (
           <RoomCard
             key={index}
-            ownername={room.ownername}
+            owner={room.owner}
             img_path={room.img_path}
             title={room.title}
             address={room.address}

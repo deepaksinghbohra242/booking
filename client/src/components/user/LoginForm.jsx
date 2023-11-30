@@ -36,7 +36,7 @@ function LoginForm() {
     } catch (error) {
       swal({
         title: "Try Again!",
-        text: "faliled",
+        text: "failed",
         icon: "error",
         button: "Ok!",
       });

@@ -70,7 +70,7 @@ const logout = expressAsyncHandler((req, res) => {
 const uploadImg = expressAsyncHandler(async(req,res)=>{
     const {image} = req.body;
     const userId = req.userId
-    console.log(userId)
+    console.log(userId);
     const imageUploaded = await cloudinaryImgUpload(image);
     try {
         const foundUser = await User.findByIdAndUpdate(userId,{

@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
- require('./config/db/dbConnect');
 const cors = require('cors');
+const dbConnect = require('./config/db/dbConnect');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./route/userRoute/UserRoute');
 const placeRoutes = require('./route/places/placeRoute');
@@ -9,7 +9,7 @@ const placeRoutes = require('./route/places/placeRoute');
 dotenv.config();
 const app = express();
 
-// dbConnect();
+dbConnect();
 
 app.use(express.json({limit : "50mb"}));
 app.use(cookieParser());

@@ -6,6 +6,7 @@ import { UserContext } from "../../UserLayout";
 function Account() {
   const { user, setUser } = useContext(UserContext);
   const [checkLogout, setCheckLogout] = useState(false);
+
   async function handleLogout() {
     try {
       await axios.post("/user/logout");
@@ -21,31 +22,36 @@ function Account() {
   }
 
   return (
-    <>
-      <div className=" h-screen border-gray-600  pt-8 min-3 flex items-center justify-center">
-        <div className=" bg-white h-screen w-1/2 border shadow-2xl flex flex-col p-8 rounded-md">
-          <div className="border border-gray-300 h-2/3 rounded-2xl ">
-            <img
-              className="mx-auto w-16 h-2/3 rounded-full mb-4"
-              src={user?.data?.pic}
-              alt="User Profile"
-            />
-          </div>
-          <h1 className="mt-4 text-2xl font-semibold mb-2">
-            {user?.data?.userName}
-          </h1>
+    <div className="flex justify-around h-screen mt-4 border">
+      {/* Left Column - Profile Image */}
+      <div className="relative h-35">
+        <img
+          className="mb-4 w-full h-3/4 rounded"
+          src={user?.data?.pic}
+          alt="Profile"
+        />
+      </div>
+
+      {/* Middle Column - User Information */}
+      <div className="flex flex-col justify-center px-4">
+        <div className="relative">
+          <h1 className="text-2xl font-bold mb-2">{user?.data?.userName}</h1>
           <p className="text-gray-600 mb-4">
             {user?.data?.firstName} {user?.data?.lastName}
           </p>
-          <p className="text-gray-600 mb-4">{user?.data?.email}</p>
-          <p className="text-gray-600 mb-4">{user?.data?.phone}</p>
+          <div className="mb-4">
+            <p className="text-gray-700">Email: {user?.data?.email}</p>
+            <p className="text-gray-700">Phone: {user?.data?.phone}</p>
+          </div>
+
+          {/* File Input */}
           <label
             htmlFor="fileInput"
-            className="flex gap-2 justify-center cursor-pointer mb-3 items-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600"
+            className="text-center cursor-pointer border border-dashed p-2 rounded"
           >
             <input
               type="file"
-              className="hidden "
+              className="hidden"
               multiple
               name=""
               id="fileInput"
@@ -56,7 +62,7 @@ function Account() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-8 h-8"
+              className="w-8 h-8 mb-2 mx-auto"
             >
               <path
                 strokeLinecap="round"
@@ -66,12 +72,17 @@ function Account() {
             </svg>
             Upload
           </label>
-          <button onClick={handleLogout} className="bg-red-400 p-3">
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="bg-red-400 p-3 mt-4 rounded-md"
+          >
             Logout
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

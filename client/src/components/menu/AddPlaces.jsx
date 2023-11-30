@@ -1,206 +1,300 @@
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import Perks from "./Perks";
-import { useState } from "react";
+import {Link, Navigate} from "react-router-dom"
+import axios from "axios";
+import swal from 'sweetalert'
 
 function AddPlaces() {
-  const [ownerName, setOwnerName] = useState("");
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-  const [placeType, setPlaceType] = useState("");
-  const [imgPath, setImgPath] = useState("");
-  const [addedPhoto, setAddedPhoto] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [perks, setPerks] = useState([]);
-  const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [maxGuests, setMaxGuests] = useState(1);
+  const [formData, setFormData] = useState({
+    ownername: "",
+    title: "",
+    address: "",
+    placeType: "",
+    img_path: "",
+    price: "",
+    description: "",
+    perks: [],
+    extraInfo: "",
+    checkIn: "",
+    checkOut: "",
+    maxGuests: 1,
+  });
 
-  function preHeader(text) {
-    return <h2 className="p-1 text-2xl  mt-4">{text}</h2>;
-  }
-  function preDescription(text) {
-    return <p className=" p-1 text-gray-300 text-sm">{text}</p>;
-  }
-  function preInput(header, description) {
-    return (
-      <div className="">
-        {preHeader(header)}
-        {preDescription(description)}
-      </div>
-    );
-  }
+  const [redirect , setRedirect] = useState(false);
 
-  function addPhotoByLink(e) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value !== undefined ? value : "",
+    }));
+  };
+
+  const handlePerksChange = (selectedPerks) => {
+    setFormData({ ...formData, perks: selectedPerks });
+  };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
-  }
+    try {
+      await axios.post("/place/registerplace", formData).then((data) => {
+        setFormData(data);
+      });
+      console.log("Form data submitted:", formData);
+      swal({
+        title: "Success!",
+        text: "Place Added Successfully",
+        icon: "success",
+        button: "Ok!",
+      });
+      setRedirect(true);
+    } catch (error) {
+      swal({
+        title: "Try Again!",
+        text: "failed",
+        icon: "error",
+        button: "Ok!",
+      });
+      console.log(error);
+    }
+  };
 
-  function uploadPhoto(e) {
-    const files = e.target.files;
-    setAddedPhoto(files);
-    console.log(files);
-  }
-  function handlesubmit(e) {
-    e.preventDefault();
-    console.log("added", addedPhoto);
+  if (redirect){
+    return <Navigate to={'/profile/places'} />
   }
   return (
-    <>
-      <div className="border border-gray-800 mt-8 m-3 rounded-xl p-6">
-        <form action="" onSubmit={handlesubmit}>
-          {preInput("Owner Name", "Enter owner Name   ")}
+    <div className="container mx-auto mt-8 p-8 border rounded-lg">
+      <h2 className="text-2xl font-bold mb-4">Add a New Place</h2>
+      <form onSubmit={handleSubmit}>
+        {/* Owner Name */}
+        <div className="mb-4">
+          <label
+            htmlFor="ownerName"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Owner Name
+          </label>
           <input
             type="text"
-            value={ownerName}
-            onChange={(e) => {
-              setOwnerName(e.target.value);
-            }}
-            className=""
-            placeholder="ownerName"
+            id="ownername"
+            name="ownername"
+            value={formData.ownername}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter owner name"
           />
-          {preInput(
-            "Title",
-            "Title for your place . Should be short and simple"
-          )}
+        </div>
+
+        {/* Title */}
+        <div className="mb-4">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Title
+          </label>
           <input
             type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            className=""
-            placeholder="title"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter title"
           />
-          {preInput("Address", "Address for your place")}
+        </div>
+
+        {/* Address */}
+        <div className="mb-4">
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Address
+          </label>
           <input
-            value={address}
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
             type="text"
-            placeholder="address"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter address"
           />
-          {preInput("Plactype", "Room or Flat")}
+        </div>
+
+        {/* Place Type */}
+        <div className="mb-4">
+          <label
+            htmlFor="placeType"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Place Type
+          </label>
           <input
             type="text"
-            value={placeType}
-            onChange={(e) => {
-              setPlaceType(e.target.value);
-            }}
-            placeholder="Room or Flats"
+            id="placeType"
+            name="placeType"
+            value={formData.placeType}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter place type"
           />
-          {preInput("Photos", "more = better")}
+        </div>
+
+        {/* Image Path */}
+        <div className="mb-4">
+          <label
+            htmlFor="imgPath"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Image Path
+          </label>
           <div className="flex gap-2">
             <input
-              value={imgPath}
-              onChange={(e) => {
-                setImgPath(e.target.value);
-              }}
               type="text"
-              placeholder="add using link .....jpg"
+              id="img_path"
+              name="img_path"
+              value={formData.img_path}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border rounded-md"
+              placeholder="Enter image path"
             />
-            <button
-              onClick={addPhotoByLink}
-              className="bg-gray-200 px-4 rounded-2xl"
-            >
-              Add&nbsp;photo
-            </button>
           </div>
-          <div className="grid gap-2 grid-cols-3 lg:grid-cols-6 md:grid-cols-4 mt-4">
-            <div>
-              <img className="rounded-2xl" src="" alt="" />
-            </div>
-            <label className="flex gap-2 justify-center cursor-pointer items-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
-              <input
-                type="file"
-                className="hidden"
-                multiple
-                onClick={uploadPhoto}
-                name=""
-                id=""
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-8 h-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                />
-              </svg>
-              Upload
-            </label>
-          </div>
-          {preInput("Description", "Description of your place")}
-          <textarea
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-            className=" h-36"
-          />
-          {preInput("Price", "Enter Price per month")}
+        </div>
+
+        {/* Price */}
+        <div className="mb-4">
+          <label
+            htmlFor="price"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Price
+          </label>
           <input
-            value={price}
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
             type="number"
+            id="price"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter price"
           />
-          {preInput("Perks", "Perks for your place")}
-          <div className="grid mt-2 gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-            <Perks selected={perks} onChange={setPerks} />
-          </div>
-          {preInput("Extra info", "House rules etc")}
+        </div>
+
+        {/* Description */}
+        <div className="mb-4">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Description
+          </label>
           <textarea
-            value={extraInfo}
-            onChange={(e) => setExtraInfo(e.target.value)}
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter description"
           />
-          {preInput("Check in and out time", "add check in and out time")}
-          <div className="grid sm:grid-cols-3 gap-7">
-            <div>
-              <h3 className="mt-2 mb-1 p-1">check in time</h3>
-              <input
-                type="number"
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                placeholder="14:00"
-              />
-            </div>
-            <div>
-              <h3 className="mt-2 mb-1 p-1">check out time</h3>
-              <input
-                type="number"
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                placeholder="15:00"
-              />
-            </div>
-            <div>
-              <h3 className="mt-2 mb-1 p-1">Pepole going to live</h3>
-              <input
-                type="number"
-                value={maxGuests}
-                onChange={(e) => setMaxGuests(e.target.value)}
-              />
-            </div>
+        </div>
+
+        {/* Perks */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-600">
+            Perks
+          </label>
+          <Perks selected={formData.perks} onChange={handlePerksChange} />
+        </div>
+
+        {/* Extra Info */}
+        <div className="mb-4">
+          <label
+            htmlFor="extraInfo"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Extra Info
+          </label>
+          <textarea
+            id="extraInfo"
+            name="extraInfo"
+            value={formData.extraInfo}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter extra info"
+          />
+        </div>
+
+        {/* Check-In and Check-Out Time */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label
+              htmlFor="checkIn"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Check-In Time
+            </label>
+            <input
+              type="number"
+              id="checkIn"
+              name="checkIn"
+              value={formData.checkIn}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border rounded-md"
+              placeholder="Enter check-in time"
+            />
           </div>
-          <div className="text-center p-4 ">
-            <button className="bg-blue-500 primary my-4 border rounded-lg w-24 p-2 ">
-              Save
-            </button>
+          <div>
+            <label
+              htmlFor="checkOut"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Check-Out Time
+            </label>
+            <input
+              type="number"
+              id="checkOut"
+              name="checkOut"
+              value={formData.checkOut}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border rounded-md"
+              placeholder="Enter check-out time"
+            />
           </div>
-        </form>
-      </div>
-    </>
+        </div>
+
+        {/* Max Guests */}
+        <div className="mb-4">
+          <label
+            htmlFor="maxGuests"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Max Guests
+          </label>
+          <input
+            type="number"
+            id="maxGuests"
+            name="maxGuests"
+            value={formData.maxGuests}
+            onChange={handleChange}
+            className="mt-1 p-2 w-full border rounded-md"
+            placeholder="Enter max guests"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
