@@ -9,7 +9,7 @@ function Places() {
 
 
   useEffect(() => {
-    axios.get("/place/fetchflats")
+    axios.get("/place/fetchuserplace")
       .then((response) => {
         setHosted(response.data);
         setLoading(false);
@@ -19,11 +19,11 @@ function Places() {
         setLoading(false);
       });
   }, []);
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  console.log(hosted);
   if (error) {
     return <div>Error: {error.message}</div>;
   }

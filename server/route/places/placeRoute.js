@@ -10,10 +10,11 @@ const {
     // placeUploadByLink
 } = require("../../controller/placectrl/placeCtrl");
 const fetchUser = require("../../middleware/fetchUserFromToken")
+const uploadByLink = require("../../middleware/uploadByLink");
 
 const placeRoutes = express.Router();
 
-placeRoutes.post('/registerplace' ,fetchUser , registerPlaces);
+placeRoutes.post('/registerplace' ,fetchUser,uploadByLink, registerPlaces);
 placeRoutes.get('/fetchuserplace',fetchUser,fetchPlaces);
 placeRoutes.get('/fetchrooms',fetchRooms);
 placeRoutes.get('/hosted',fetchUser,hostedFlats );

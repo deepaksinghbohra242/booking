@@ -2,7 +2,7 @@ const express = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Place = require("../../model/place/Place");
 const User = require("../../model/user/User");
-const imageDownloader = require("image-downloader")
+const cloudinaryUploadImg = require('../../utils/cloudnary');
 
 
 const registerPlaces = expressAsyncHandler(async (req, res) => {
@@ -11,10 +11,10 @@ const registerPlaces = expressAsyncHandler(async (req, res) => {
         const place = await Place.create({
             title: req?.body?.title,
             address: req?.body?.address,
-            placetype: req?.body?.placetype,
+            img_path : req?.image_path,
+            placeType: req?.body?.placeType,
             description: req?.body?.description,
             price: req?.body?.price,
-            photos: req?.body?.photos,
             owner: user?._id,
             extraInfo: req?.body?.extraInfo,
             ownername: req?.body?.ownername,
@@ -51,7 +51,7 @@ const fetchAllPlaces = expressAsyncHandler(async(req,res)=>{
 
 const fetchRooms = expressAsyncHandler(async(req,res)=>{
     try {
-       const rooms = await Place.find({placetype : "room" });
+       const rooms = await Place.find({placeType : "room" });
        res.json(rooms);
     } catch (error) {
         res.json(error)
@@ -60,7 +60,7 @@ const fetchRooms = expressAsyncHandler(async(req,res)=>{
 
 const fetchFlats = expressAsyncHandler(async(req,res)=>{
     try {
-        const flats = await Place.find({placetype : "flat"});
+        const flats = await Place.find({placeType : "flat"});
         res.json(flats);
     } catch (error) {
         res.json(error);
@@ -93,17 +93,14 @@ const booked = expressAsyncHandler(async (req,res)=>{
 })
 
 const placeUploadByLink = expressAsyncHandler(async(req,res)=>{
-    const {link} = req.body;
-    const newName = 'photo'+Date.now()+'jpeg';
-    await imageDownloader.image({
-        url : link,
-        dest : `server/public/place/${newName}`
-    })
-    res.json(newName);
+    const {img_path} = req.body;
+    console.log(img_path);
+    const imageByLink = await cloudinaryUploadImg(img_path);
+    res.json(imageByLink?.url?.url);
 })
 
 
-
+ 
 module.exports = { 
     registerPlaces,  
     fetchPlaces ,
@@ -112,5 +109,5 @@ module.exports = {
     hostedFlats,
     fetchAllPlaces,
     booked,
-    // placeUploadByLink
+    placeUploadByLink
 };

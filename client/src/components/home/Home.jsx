@@ -1,31 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
+import RoomCard from "../hotel/RoomCard";
+
 
 function Home() {
+  const [allRooms, setAllRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get("/place/fetchall")
+      .then((response) => {
+        setAllRooms(response.data);
+        setLoading(false);
+      }) 
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+  
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <>
-      <div className="flex justify-between gap-5 bg-white p-6 rounded shadow-md">
-        <div className="flex gap-5">
-          <img
-            src="https://via.placeholder.com/300"
-            alt="Room"
-            className="object-cover mb-4 w-45 h-35 rounded"
-          />
-          <div className="">
-            <h2 className="text-lg font-semibold mb-2">title</h2>
-            <p>perks</p>
-            <p>Owner</p>
-            {/* <p>Date Created: {new Date(datecreated).toLocaleDateString()}</p> */}
-            <p className="text-gray-600 mb-4">decription</p>
-          </div>
-        </div>
-        <div className="">
-          <div className="flex flex-col mr-10 mt-1">
-            <span className="text-gray-500">Price: </span>
-            <p className="text-gray-500">Place:</p>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-              Details
-            </button>
-          </div>
+      <div className="container mx-auto mt-8">
+        <h1 className="flex justify-center text-3xl font-bold mb-4">To-Let For Your Rooms and Flat</h1>
+        <div className="grid grid-cols-1 md:grid-cols- lg:grid-cols-1 gap-8 p-8 m-8">
+          {allRooms.map((room, index) => (
+            <RoomCard
+              key={index}
+              owner={room.owner}
+              img_path={room.img_path}
+              title={room.title}
+              address={room.address}
+              placetype={room.placetype}
+              description={room.description}
+              perks={room.perks}
+              checkIn={room.checkIn}
+              checkOut={room.checkOut}
+              maxGuests={room.maxGuests}
+              price={room.price}
+              isbooked={room.isbooked}
+              datecreated={room.datecreated}
+            />
+          ))}
         </div>
       </div>
     </>
