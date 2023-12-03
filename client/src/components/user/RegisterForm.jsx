@@ -51,7 +51,7 @@ function RegisterForm() {
   };
 
   if(redirect){
-    return <Navigate to={"/home"} />
+    return <Navigate to={"/login"} />
   }
 
   return (
@@ -67,6 +67,7 @@ function RegisterForm() {
           <input
             type="text"
             id="userName"
+            required
             name="userName"
             value={credentials.userName}
             onChange={handleChange}
@@ -82,6 +83,7 @@ function RegisterForm() {
           <input
             type="text"
             id="firstName"
+            required
             name="firstName"
             value={credentials.firstName}
             onChange={handleChange}
@@ -97,6 +99,7 @@ function RegisterForm() {
           <input
             type="text"
             id="lastName"
+            required
             name="lastName"
             value={credentials.lastName}
             onChange={handleChange}
@@ -113,6 +116,7 @@ function RegisterForm() {
             type="email"
             id="email"
             name="email"
+            required
             value={credentials.email}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md"
@@ -128,6 +132,7 @@ function RegisterForm() {
             type="text"
             id="phone"
             name="phone"
+            required
             value={credentials.phone}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md"
@@ -143,6 +148,7 @@ function RegisterForm() {
             type="password"
             id="password"
             name="password"
+            required
             value={credentials.password}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md"

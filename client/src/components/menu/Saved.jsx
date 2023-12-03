@@ -39,6 +39,7 @@ function Saved() {
           <RoomCard
             key={index}
             ownername={room.ownername}
+            id={room._id}
             img_path={room.img_path}
             title={room.title}
             address={room.address}

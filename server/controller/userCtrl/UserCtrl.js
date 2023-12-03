@@ -45,7 +45,7 @@ const userLoginCtrl = expressAsyncHandler(async (req, res) => {
 //fetch user profile
 const fetchUserProfile = expressAsyncHandler(async (req, res) => {
     const { token } = req.cookies;
-    if (!token) {  
+    if (!token) {
         return res.status(401).json({ message: 'Unauthorized : Missing token' });
     }
     jwt.verify(token, process.env.JWT_KEY, async (err, userData) => {
@@ -64,21 +64,16 @@ const logout = expressAsyncHandler((req, res) => {
     res.cookie('token', '').json(true);
 })
 
-
-
-
-const uploadImg = expressAsyncHandler(async(req,res)=>{
-    const {image} = req.body;
+const uploadImg = expressAsyncHandler(async (req, res) => {
+    const { image } = req.body;
     const userId = req.userId
-    console.log(userId);
     const imageUploaded = await cloudinaryImgUpload(image);
     try {
-        const foundUser = await User.findByIdAndUpdate(userId,{
-            pic : imageUploaded?.url?.url
-        },{
-            new : true
+        const foundUser = await User.findByIdAndUpdate(userId, {
+            pic: imageUploaded?.url?.url
+        }, {
+            new: true
         })
-        console.log(foundUser);
     } catch (error) {
         console.log(error);
     }

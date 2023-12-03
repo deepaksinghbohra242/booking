@@ -9,7 +9,7 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("/place/fetchall")
+      axios.get("/place/fetchall")
       .then((response) => {
         setAllRooms(response.data);
         setLoading(false);
@@ -36,6 +36,7 @@ function Home() {
           {allRooms.map((room, index) => (
             <RoomCard
               key={index}
+              id={room._id}
               owner={room.owner}
               img_path={room.img_path}
               title={room.title}

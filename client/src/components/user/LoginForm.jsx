@@ -49,14 +49,13 @@ function LoginForm() {
   }
 
   return (
-    <div className="container w-5/12 h-4/5 mx-auto mt-8 border  border-gray-300 rounded-2xl">
-      <h1 className="text-3xl font-bold text-center mb-4">Login</h1>
+    <div className="container w-5/12 h-4/5 mx-auto mt-8 border shadow-2xl  border-gray-300 rounded-2xl">
+      <h1 className="text-3xl font-bold text-center mt-6 mb-4">Login</h1>
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        {/* Email */}
         <div className="mb-4 pt-4">
           <label
             htmlFor="email"
-            className="block  text-sm font-semibold text-gray-600"
+            className="block text-sm font-bold text-gray-600"
           >
             Email
           </label>
@@ -66,7 +65,7 @@ function LoginForm() {
             name="email"
             value={credentials.email}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border hover:shadow-2xl border-solid rounded-md"
           />
         </div>
 
@@ -74,7 +73,7 @@ function LoginForm() {
         <div className="mb-4">
           <label
             htmlFor="password"
-            className="block text-sm font-semibold text-gray-600"
+            className="block text-sm font-bold text-gray-600"
           >
             Password
           </label>
@@ -84,7 +83,7 @@ function LoginForm() {
             name="password"
             value={credentials.password}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border hover:shadow-2xl border-solid rounded-md"
           />
         </div>
 
@@ -92,7 +91,7 @@ function LoginForm() {
         <div className="mb-8 flex justify-center pt-4">
           <button
             type="submit"
-            className=" bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            className="bg-blue-500 text-white p-4 rounded-md hover:bg-blue-600"
           >
             Login
           </button>

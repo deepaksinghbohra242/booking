@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import roomRent from "../../assets/image/roomrent.jpg";
 
 function Welcome() {
+  
   return (
     <>
     <section className="p-20 pb-70 relative overflow-hidden bg-gradient-to-b from-blue-400 via-blue-700 to-blue-400 text-white">
@@ -18,12 +19,12 @@ function Welcome() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Link to={"/"}>
-                <button className="text-white h-10 capitalize font-medium text-sm rounded-md bg-blue-500 px-8 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
+              <Link to={"/home"}>
+                <button className="text-white h-10 capitalize font-medium  text-sm rounded-md bg-blue-500 px-8 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
                   Check Room Availability
                 </button>
               </Link>
-              <Link to={"./profile/places"}>
+              <Link to={"/"}>
                 <button className="text-blue-800 border h-10 capitalize font-medium text-sm rounded-md border-blue-800 px-8 hover:bg-blue-100 focus:outline-none focus:border-blue-500 active:bg-blue-200">
                   Post Room Availability
                 </button>
