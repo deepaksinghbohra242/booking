@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdOutlineMeetingRoom } from "react-icons/md";
 import Rentlogo from "../../assets/logo/rentlogo.png";
 import { RiHotelLine } from "react-icons/ri";
-import { IoChatboxSharp } from "react-icons/io5";
 import { BiMenu } from "react-icons/bi";
 import { IoLogInOutline } from "react-icons/io5";
 import { UserContext } from "../../UserLayout";

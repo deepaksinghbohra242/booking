@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
 
 function RoomCard({
+  id,
   ownername,
   img_path,
   title,
@@ -11,11 +15,12 @@ function RoomCard({
   checkIn,
   checkOut,
   maxGuests,
-  isBooked,
+  isbooked,
   datecreated,
 }) {
-  const perkIcons = ["Wifi", "Parking", "TV", "Radio", "Pets", "Entrance"];
+  const [isBooked, setIsBooked] = useState(isbooked || false);
 
+  const perkIcons = ["Wifi", "Parking", "TV", "Radio", "Pets", "Entrance"];
   function renderPerks(perks) {
     return perkIcons
       .filter((perk, index) => perks[index])
@@ -25,6 +30,31 @@ function RoomCard({
         </span>
       ));
   }
+  console.log(isBooked);
+  const handleBookNow = async () => {
+    try {
+      const response = await axios.put("place/isbooked", {
+        id,
+        isBooked: !isBooked,
+      });
+
+      setIsBooked(response.isbooked);
+      swal({
+        title: "Success!",
+        text: "Booked Successfully",
+        icon: "success",
+        button: "Ok!",
+      });
+    } catch (error) {
+      swal({
+        title: "Success!",
+        text: "Failed Booking",
+        icon: "success",
+        button: "Ok!",
+      });
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -44,7 +74,8 @@ function RoomCard({
             </h2>
             <p className="text-lg">Perks: {renderPerks(perks)}</p>
             <p className="text-lg">
-              Owner: <span className="font-semibold capitalize">{ownername}</span>
+              Owner:{" "}
+              <span className="font-semibold capitalize">{ownername}</span>
             </p>
             <p className="text-lg">
               Address:{" "}
@@ -55,12 +86,19 @@ function RoomCard({
         <div className="">
           <div className="flex flex-col mr-10 mt-3">
             <span className="text-gray-500">Price: ${price}/night</span>
-            <button className="bg-red-500 mt-2 text-white px-4 py-2 rounded transform transition-transform hover:scale-105" disabled={isBooked}>
+            <button
+              className={`bg-red-600 mt-2 text-white px-4 py-2 rounded hover:scale-105`}
+              onClick={handleBookNow}
+            >
               {isBooked ? "Booked" : "Book Now"}
             </button>
-            <button className="bg-blue-500 mt-2 text-white px-4 py-2 rounded transform transition-transform hover:scale-105">
+
+            <Link
+              to={`/room/${id}`}
+              className="bg-blue-500 mt-2 text-white px-4 py-2 rounded transform transition-transform hover:scale-105"
+            >
               Details
-            </button>
+            </Link>
           </div>
         </div>
       </div>

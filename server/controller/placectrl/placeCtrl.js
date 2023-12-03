@@ -67,6 +67,16 @@ const fetchFlats = expressAsyncHandler(async(req,res)=>{
     }
 })
 
+const fetchByTitle = expressAsyncHandler(async (req,res)=>{
+    try {
+        const id = req.body?.id
+        const details = await Place.find({id : id});
+        res.json(details);
+    } catch (error) {
+        res.json(error)
+    }
+})
+
 const hostedFlats = expressAsyncHandler(async(req,res)=>{
     try {
         const userId = req.userId;
@@ -99,6 +109,25 @@ const placeUploadByLink = expressAsyncHandler(async(req,res)=>{
     res.json(imageByLink?.url?.url);
 })
 
+    const isBookedCtrl = expressAsyncHandler(async(req,res)=>{
+        const placeId = req.body.id;
+        try{
+            const place = await Place.findById(placeId);
+            console.log(req.body?.isBooked);
+            if(!place){
+                res.status(404).json({message : 'Place not found'});
+                return ;
+            }
+            place.isbooked = req.body.isBooked;
+
+            await place.save();
+
+            res.json(place);
+        }catch(error){ 
+            res.json(error);
+        }
+    })
+
 
  
 module.exports = { 
@@ -109,5 +138,7 @@ module.exports = {
     hostedFlats,
     fetchAllPlaces,
     booked,
-    placeUploadByLink
+    fetchByTitle,
+    placeUploadByLink,
+    isBookedCtrl
 };

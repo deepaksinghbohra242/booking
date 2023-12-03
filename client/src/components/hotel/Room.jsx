@@ -6,6 +6,8 @@ function Room() {
   const [roomDetails, setRoomDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredRoomDetails, setFilteredRoomDetails] = useState([]);
 
   useEffect(() => {
     axios.get("/place/fetchrooms")
@@ -19,6 +21,21 @@ function Room() {
       });
   }, []);
 
+  useEffect(() => {
+    // Filter room details based on the address input
+    const filteredRooms = roomDetails.filter(room =>
+      room.address.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredRoomDetails(filteredRooms);
+  }, [searchInput, roomDetails]);
+
+  const handleSearch = () => {
+    // Update the filtered room details based on the address input
+    setFilteredRoomDetails(roomDetails.filter(room =>
+      room.address.toLowerCase().includes(searchInput.toLowerCase())
+    ));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -29,24 +46,27 @@ function Room() {
 
   return (
     <div className="bg-gray-100 min-h-screen p-4 ">
-      <div className='font-bold  text-center text-2xl mb-5 ml-5'>
+      <div className='font-bold text-center text-2xl mb-5 ml-5'>
         Search for Rooms
       </div>
       <div className="max-w-3xl flex gap-6 mx-auto mb-8">
         <input
           type="text"
-          placeholder="Search..."
-          className="w-full p-2 border border-gray-300  rounded-2xl"
+          placeholder="Search by Address..."
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-2xl"
         />
-        <button className='bg-blue-500 p-3 w-36  rounded-2xl'>
+        <button className='bg-blue-500 p-3 w-36 rounded-2xl' onClick={handleSearch}>
           Search
         </button>
       </div>
       <hr />
       <div className="grid grid-cols-1 md:grid-cols- lg:grid-cols-1 gap-8 p-8 m-8">
-        {roomDetails.map((room, index) => (
+        {filteredRoomDetails.map((room, index) => (
           <RoomCard
             key={index}
+            id={room._id}
             ownername={room.ownername}
             img_path={room.img_path}
             title={room.title}

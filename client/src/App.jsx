@@ -10,6 +10,7 @@ import Welcome from "./components/home/Welcome";
 import Flat from "./components/hotel/Flat";
 import Profile from "./components/menu/Profile";
 import PhotoPage from "./components/utils/photoPage";
+import Details from "./components/hotel/Details";
 
 
 axios.defaults.baseURL = "http://localhost:4000/api";
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/flat" element={<Flat />} />
             <Route path="/profile/:subpage?" element={<Profile />} />
             <Route path="/profile/:subpage/:action" element={<Profile />} />
+            <Route path="/room/:title" element={<Details />} />
           </Route>
         </Routes>
       </UserContextProvider>
